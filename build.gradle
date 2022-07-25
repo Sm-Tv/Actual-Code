@@ -1,0 +1,50 @@
+plugins {
+    id "com.jfrog.artifactory"
+}
+apply plugin: 'maven-publish'
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+ext.publishingName = 'directposapi-core'
+ext.publishingVersion = rootProject.version
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode projectVersionCode
+        versionName publishingVersion
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = kotlin_jvm_target
+    }
+}
+
+dependencies {
+    implementation project(':common')
+
+    implementation deps.loggingApi.values()
+    testImplementation deps.test.junit
+    implementation deps.kotlin.stdlib
+
+    implementation deps.ktor.android
+    implementation deps.ktor.auth
+    implementation deps.ktor.cio
+    implementation deps.gson
+}
